@@ -3,6 +3,8 @@ import comparators.UniversityComparator;
 import enums.StudentSort;
 import enums.UniversitySort;
 import io.XlsReader;
+import io.XlsWriter;
+import model.Statistics;
 import model.Student;
 import model.University;
 
@@ -21,5 +23,8 @@ public class Main {
         List<Student> students = XlsReader.readXlsStudents("src/main/resources/universityInfo.xlsx");
         StudentComparator studentComparator = Utils.getStudentComparator(StudentSort.AVG_EXAM_SCORE);
         students.stream().sorted(studentComparator).forEach(System.out::println);
+
+        List<Statistics> statistics = StatisticUtils.generateStatistics(students, universities);
+        XlsWriter.writeToXlsx(statistics, "src/main/resources/report.xlsx");
     }
 }
