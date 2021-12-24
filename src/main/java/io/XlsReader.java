@@ -3,6 +3,8 @@ package io;
 import enums.StudyProfile;
 import model.Student;
 import model.University;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,10 +17,11 @@ import java.util.List;
 
 public class XlsReader {
 
-    private XlsReader() {
-    }
+    private static final Logger log = LogManager.getLogger(XlsReader.class);
 
     public static List<University> readXlsUniversities(String filePath) throws IOException {
+
+        log.info("reading universities xlsx file: " + filePath);
 
         List<University> universities = new ArrayList<>();
 
@@ -45,6 +48,8 @@ public class XlsReader {
     }
 
     public static List<Student> readXlsStudents(String filePath) throws IOException {
+
+        log.info("reading students xlsx file: " + filePath);
 
         List<Student> students = new ArrayList<>();
 

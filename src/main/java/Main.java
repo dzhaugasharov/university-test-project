@@ -1,7 +1,3 @@
-import comparators.StudentComparator;
-import comparators.UniversityComparator;
-import enums.StudentSort;
-import enums.UniversitySort;
 import io.XlsReader;
 import io.XlsWriter;
 import model.Statistics;
@@ -10,21 +6,26 @@ import model.University;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class Main {
+    private static final Logger log = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) throws IOException {
-        List<University> universities = XlsReader.readXlsUniversities("src\\main\\resources\\universityInfo.xlsx");
-        UniversityComparator universityComparator = Utils.getUniversityComparator(UniversitySort.FULL_NAME);
-        universities.stream().sorted(universityComparator).forEach(System.out::println);
+        LogManager.getLogManager().readConfiguration(Main.class.getResourceAsStream("logging.properties"));
+        try {
+            log.info("Program started");
+            List<University> universities = XlsReader.readXlsUniversities("src\\main\\resources\\universityInfo.xlsx");
+            List<Student> students = XlsReader.readXlsStudents("src/main/resources/universityInfo.xlsx");
 
-        System.out.println("");
-
-        List<Student> students = XlsReader.readXlsStudents("src/main/resources/universityInfo.xlsx");
-        StudentComparator studentComparator = Utils.getStudentComparator(StudentSort.AVG_EXAM_SCORE);
-        students.stream().sorted(studentComparator).forEach(System.out::println);
-
-        List<Statistics> statistics = StatisticUtils.generateStatistics(students, universities);
-        XlsWriter.writeToXlsx(statistics, "src/main/resources/report.xlsx");
+            List<Statistics> statistics = StatisticUtils.generateStatistics(students, universities);
+            XlsWriter.writeToXlsx(statistics, "src/main/resources/report.xlsx");
+        }
+        catch (IOException e) {
+            log.log(Level.SEVERE, (Supplier<String>) e);
+        }
     }
 }

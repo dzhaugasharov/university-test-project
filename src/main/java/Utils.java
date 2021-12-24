@@ -5,7 +5,6 @@ import comparators.UniversityComparators;
 import enums.StudentSort;
 import enums.UniversitySort;
 
-import java.util.Comparator;
 
 public class Utils {
 

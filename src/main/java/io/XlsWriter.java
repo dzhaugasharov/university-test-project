@@ -1,6 +1,8 @@
 package io;
 
 import model.Statistics;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.xssf.usermodel.*;
@@ -12,7 +14,11 @@ import java.util.List;
 
 public class XlsWriter {
 
+    private static final Logger log = LogManager.getLogger(XlsWriter.class);
+
     public static void writeToXlsx(List<Statistics> data, String filePath) throws IOException {
+
+        log.info("writing data to xlsx file: " + filePath);
 
         FileOutputStream outputStream = new FileOutputStream(filePath);
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -26,7 +32,6 @@ public class XlsWriter {
         headerStyle.setFont(font);
         String[] headers = {"профиль обучения", "средний балл за экзамен", "количество студентов по профилю",
                 "количество университетов по профилю", "названия университетов"};
-        //headerRow.getCell(1).setCellValue("");
         for (int i = 0; i < headers.length; i++) {
             XSSFCell cell = headerRow.createCell(i);
             cell.setCellStyle(headerStyle);
